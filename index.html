@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <title>Ege'nin Küçüklük Fotoğrafı</title>
+  <style>
+    body {
+      background-color: black;
+      color: white;
+      text-align: center;
+      font-family: Arial, sans-serif;
+      padding-top: 50px;
+    }
+    button {
+      padding: 20px;
+      font-size: 20px;
+      background-color: red;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    button:hover {
+      background-color: darkred;
+    }
+    img {
+      margin-top: 30px;
+      display: none;
+      max-width: 80%;
+      height: auto;
+      border-radius: 15px;
+      box-shadow: 0 0 20px rgba(255,255,255,0.6);
+    }
+  </style>
+</head>
+<body>
+  <h1>“Ege Gayinin Küçüklük Fotoğrafı” İçin 10 Kez Tıkla 😈</h1>
+  <button onclick="clickCounter()">TIKLA</button>
+  <p id="counter">0 / 10</p>
+  <img id="hiddenImage" src="https://i.postimg.cc/NfSCn1SD/Whats-App-G-rsel-2025-05-07-saat-21-38-17-80a7f656-upscaled.jpg" alt="Keltoş Fotoğrafı">
+
+  <script>
+    let count = 0;
+    function clickCounter() {
+      count++;
+      document.getElementById("counter").innerText = `${count} / 10`;
+      if (count >= 10) {
+        document.getElementById("hiddenImage").style.display = "block";
+      }
+    }
+  </script>
+</body>
+</html>

@@ -41,10 +41,18 @@
       z-index: 999;
     }
 
-    .jumpscare img, .reveal-img img {
+    .jumpscare img {
       width: 100vw;
       height: 100vh;
       object-fit: cover;
+    }
+
+    .reveal-img img {
+      max-width: 100%;
+      max-height: 100%;
+      width: auto;
+      height: auto;
+      object-fit: contain;
     }
   </style>
 </head>
@@ -70,14 +78,14 @@
 
       scare.style.display = 'flex';
 
-      scream.play().catch(() => {
-        console.warn("Ses otomatik çalmıyor olabilir.");
+      scream.play().catch((e) => {
+        console.warn("Ses çalmadı:", e);
       });
 
       setTimeout(() => {
         scare.style.display = 'none';
         reveal.style.display = 'flex';
-      }, 2500); // 2.5 saniye sonra ifşa gelir
+      }, 2500);
     }
   </script>
 

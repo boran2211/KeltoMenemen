@@ -26,7 +26,7 @@
       color: crimson;
     }
 
-    .button {
+    .button, .answer-btn {
       font-size: 28px;
       padding: 15px 35px;
       background-color: darkred;
@@ -34,15 +34,15 @@
       border: none;
       border-radius: 10px;
       cursor: pointer;
-      margin-top: 40px;
+      margin-top: 20px;
       transition: transform 0.2s;
     }
 
-    .button:active {
+    .button:active, .answer-btn:active {
       transform: scale(0.95);
     }
 
-    .countdown, .jumpscare, .reveal-img {
+    .countdown, .jumpscare, .reveal-img, .question-section {
       position: fixed;
       top: 0; left: 0;
       width: 100vw;
@@ -82,6 +82,15 @@
       animation: colorShift 1s infinite;
     }
 
+    .question-section h2 {
+      font-size: 36px;
+      margin-bottom: 30px;
+    }
+
+    .answer-btn {
+      margin: 10px;
+    }
+
     @keyframes colorShift {
       0%   { color: white; background-color: black; }
       25%  { color: black; background-color: white; }
@@ -91,8 +100,8 @@
     }
 
     @keyframes flash {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0; }
+      0%, 100% { color: white; }
+      50% { color: crimson; }
     }
 
     @keyframes fadeIn {
@@ -128,8 +137,17 @@
   </div>
 
   <div class="reveal-img" id="reveal">
-    <h2>SEN MALSIN KANKA :D</h2>
+    <h2>SEN MALSIN KANKA</h2>
     <img src="https://i.imgur.com/tmQqSfg_d.webp" alt="ifşa">
+  </div>
+
+  <div class="question-section" id="questionSection">
+    <h2>Sen Keltoş Babanın Yakışıklı Olduğunu Düşünüyormusun?</h2>
+    <button class="answer-btn" onclick="checkAnswer('A')">A - Hayır</button>
+    <button class="answer-btn" onclick="checkAnswer('B')">B - HAYIR</button>
+    <button class="answer-btn" onclick="checkAnswer('C')">C - hayır</button>
+    <button class="answer-btn" onclick="checkAnswer('D')">D - Evet</button>
+    <button class="answer-btn" onclick="checkAnswer('E')">E - Yaniii</button>
   </div>
 
   <audio id="screamSound" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_6a7305532a.mp3?filename=female-scream-164456.mp3"></audio>
@@ -146,8 +164,7 @@
       const reveal = document.getElementById('reveal');
       const scream = document.getElementById('screamSound');
       const bg = document.getElementById('bgMusic');
-
-      navigator.vibrate?.([100, 50, 100]); // Titreşim
+      const questionSection = document.getElementById('questionSection');
 
       countdown.style.display = 'flex';
       let count = 3;
@@ -163,13 +180,25 @@
 
           setTimeout(() => {
             jumpscare.style.display = 'none';
-            reveal.style.display = 'flex';
-            document.body.classList.add('animated-bg');
-            bg.volume = 0.2;
-            bg.play();
+            questionSection.style.display = 'flex';
           }, 2000);
         }
       }, 1000);
+    }
+
+    function checkAnswer(answer) {
+      const reveal = document.getElementById('reveal');
+      const questionSection = document.getElementById('questionSection');
+      
+      if (answer === 'A' || answer === 'B' {
+        alert("Sen Aptal Mısın?");
+        setTimeout(() => {
+          questionSection.style.display = 'flex';
+        }, 1000);
+      } else {
+        questionSection.style.display = 'none';
+        reveal.style.display = 'flex';
+      }
     }
 
     // Gizli Keltoş Modu

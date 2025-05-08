@@ -5,116 +5,84 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Keltoş Baba İfşa</title>
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
     body, html {
-      width: 100%;
-      height: 100%;
-      overflow: hidden;
-      font-family: Arial, sans-serif;
-      background-color: black;
-      color: white;
+      width: 100%; height: 100%; overflow: hidden;
+      font-family: Arial, sans-serif; background-color: black; color: white;
     }
     .center {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      flex-direction: column;
-      text-align: center;
+      display: flex; justify-content: center; align-items: center;
+      height: 100vh; flex-direction: column; text-align: center;
     }
     .btn {
-      padding: 1rem 2rem;
-      font-size: 1.2rem;
-      background-color: crimson;
-      color: white;
-      border: none;
-      cursor: pointer;
-      margin-top: 20px;
-      border-radius: 10px;
+      padding: 1rem 2rem; font-size: 1.2rem; background-color: crimson;
+      color: white; border: none; cursor: pointer; margin-top: 20px; border-radius: 10px;
+      transition: background-color 0.3s ease;
     }
-    #jumpscare {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      background-color: black;
-      justify-content: center;
-      align-items: center;
-      z-index: 1000;
+    .btn:hover { background-color: darkred; }
+    #jumpscare, #countdown {
+      display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+      background-color: black; justify-content: center; align-items: center; z-index: 1000;
+      flex-direction: column; color: red; font-size: 5rem;
     }
     #jumpscare img {
-      width: 100%;
-      max-width: 400px;
+      width: 100%; max-width: 400px; animation: fadeIn 1s ease forwards;
     }
     #questionSection, #gameSection, #ifsaSection {
-      display: none;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
+      display: none; flex-direction: column; justify-content: center; align-items: center;
+      height: 100vh; animation: fadeSlide 1s ease forwards;
     }
     .option {
-      margin: 10px;
-      padding: 10px 20px;
-      background-color: #444;
-      border-radius: 10px;
-      cursor: pointer;
-      color: white;
+      margin: 10px; padding: 10px 20px; background-color: #444;
+      border-radius: 10px; cursor: pointer; color: white;
+      transition: transform 0.3s ease;
     }
+    .option:hover { transform: scale(1.1); background-color: #666; }
     .bg-flash {
       animation: flash 0.5s infinite;
     }
     @keyframes flash {
-      0% { background-color: white; }
-      25% { background-color: black; }
-      50% { background-color: red; }
-      75% { background-color: blue; }
-      100% { background-color: white; }
+      0% { background-color: white; } 25% { background-color: black; }
+      50% { background-color: red; } 75% { background-color: blue; } 100% { background-color: white; }
     }
     #ifsaSection img {
-      max-width: 90vw;
-      height: auto;
-      border: 5px solid white;
-      border-radius: 10px;
+      max-width: 90vw; height: auto; border: 5px solid white; border-radius: 10px;
+      animation: fadeIn 2s ease forwards;
     }
     .top-text {
-      font-size: 2rem;
-      margin-bottom: 20px;
-      color: yellow;
-      font-weight: bold;
+      font-size: 2rem; margin-bottom: 20px; color: yellow; font-weight: bold;
+      animation: colorCycle 2s infinite;
     }
-    #gameSection p {
-      margin: 10px;
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.8); }
+      to { opacity: 1; transform: scale(1); }
     }
+    @keyframes fadeSlide {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes colorCycle {
+      0% { color: red; } 25% { color: blue; } 50% { color: green; }
+      75% { color: yellow; } 100% { color: purple; }
+    }
+    #gameSection p { margin: 10px; }
     .drag {
-      display: inline-block;
-      padding: 5px 10px;
-      margin: 5px;
-      background: darkorange;
-      color: white;
-      border-radius: 8px;
-      cursor: move;
+      display: inline-block; padding: 5px 10px; margin: 5px;
+      background: darkorange; color: white; border-radius: 8px; cursor: move;
     }
     .drop {
-      display: inline-block;
-      min-width: 100px;
-      min-height: 30px;
-      border: 2px dashed white;
-      margin-left: 10px;
+      display: inline-block; min-width: 100px; min-height: 30px;
+      border: 2px dashed white; margin-left: 10px;
     }
   </style>
 </head>
 <body>
   <div class="center" id="main">
     <h1>Keltoş Baba İfşa</h1>
-    <button class="btn" onclick="startSequence()">Tıkla ve İfşayı Gör</button>
+    <button class="btn" onclick="startCountdown()">Tıkla ve İfşayı Gör</button>
   </div>
+
+  <div id="countdown" class="center"></div>
 
   <div id="jumpscare" class="center">
     <img src="https://miro.medium.com/v2/resize:fit:1400/format:webp/1*N05ZF9nrYMV-KUTAd33K4g.png" alt="Jumpscare">
@@ -151,8 +119,25 @@
   <script>
     let correctAnswers = 0;
 
-    function startSequence() {
+    function startCountdown() {
       document.getElementById('main').style.display = 'none';
+      const countdownEl = document.getElementById('countdown');
+      countdownEl.style.display = 'flex';
+      let count = 5;
+      countdownEl.textContent = count;
+      const interval = setInterval(() => {
+        count--;
+        if (count === 0) {
+          clearInterval(interval);
+          countdownEl.style.display = 'none';
+          startSequence();
+        } else {
+          countdownEl.textContent = count;
+        }
+      }, 1000);
+    }
+
+    function startSequence() {
       const jumpscare = document.getElementById('jumpscare');
       jumpscare.style.display = 'flex';
       document.getElementById('screamSound').play();
@@ -163,7 +148,7 @@
     }
 
     function checkAnswer(answer) {
-      if (['A', 'B', 'C'].includes(answer)) {
+      if (["A", "B", "C"].includes(answer)) {
         document.getElementById('questionSection').style.display = 'none';
         document.getElementById('gameSection').style.display = 'flex';
       } else {
@@ -171,13 +156,9 @@
       }
     }
 
-    function allowDrop(ev) {
-      ev.preventDefault();
-    }
+    function allowDrop(ev) { ev.preventDefault(); }
 
-    function drag(ev) {
-      ev.dataTransfer.setData("text", ev.target.id);
-    }
+    function drag(ev) { ev.dataTransfer.setData("text", ev.target.id); }
 
     function drop(ev) {
       ev.preventDefault();

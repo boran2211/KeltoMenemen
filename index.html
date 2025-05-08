@@ -190,12 +190,12 @@
       const reveal = document.getElementById('reveal');
       const questionSection = document.getElementById('questionSection');
       
-      if (answer === 'A' || answer === 'B' {
+      if (answer === 'A' || answer === 'B' || answer === 'C') {
         alert("Sen Aptal Mısın?");
         setTimeout(() => {
           questionSection.style.display = 'flex';
         }, 1000);
-      } else {
+      } else if (answer === 'D' || answer === 'E') {
         questionSection.style.display = 'none';
         reveal.style.display = 'flex';
       }

@@ -180,8 +180,8 @@
 
           setTimeout(() => {
             jumpscare.style.display = 'none';
-            questionSection.style.display = 'flex';
-          }, 2000);
+            questionSection.style.display = 'flex'; // Bu kısmı ekledik!
+          }, 2000); // 2 saniye sonra soruyu göster
         }
       }, 1000);
     }
@@ -193,7 +193,7 @@
       if (answer === 'A' || answer === 'B' || answer === 'C') {
         alert("Sen Aptal Mısın?");
         setTimeout(() => {
-          questionSection.style.display = 'flex';
+          questionSection.style.display = 'flex'; // Eğer yanlış cevap verilirse soruyu tekrar göster
         }, 1000);
       } else if (answer === 'D' || answer === 'E') {
         questionSection.style.display = 'none';

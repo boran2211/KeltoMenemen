@@ -26,7 +26,7 @@
       color: crimson;
     }
 
-    .button, .answer-btn {
+    .button, .answer-btn, .game-btn {
       font-size: 28px;
       padding: 15px 35px;
       background-color: darkred;
@@ -38,11 +38,11 @@
       transition: transform 0.2s;
     }
 
-    .button:active, .answer-btn:active {
+    .button:active, .answer-btn:active, .game-btn:active {
       transform: scale(0.95);
     }
 
-    .countdown, .jumpscare, .reveal-img, .question-section {
+    .countdown, .jumpscare, .reveal-img, .question-section, .game-section, .funnyscreen {
       position: fixed;
       top: 0; left: 0;
       width: 100vw;
@@ -82,6 +82,15 @@
       animation: colorShift 1s infinite;
     }
 
+    .funnyscreen h2 {
+      font-size: 36px;
+    }
+
+    .funnyscreen .question {
+      font-size: 24px;
+      margin-bottom: 10px;
+    }
+
     .question-section h2 {
       font-size: 36px;
       margin-bottom: 30px;
@@ -89,6 +98,35 @@
 
     .answer-btn {
       margin: 10px;
+    }
+
+    .draggable {
+      background-color: darkblue;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 10px;
+      cursor: pointer;
+      margin: 5px;
+      user-select: none;
+      font-size: 20px;
+      transition: transform 0.2s;
+    }
+
+    .draggable:active {
+      transform: scale(0.95);
+    }
+
+    .dropzone {
+      background-color: darkgray;
+      width: 250px;
+      height: 50px;
+      margin: 10px;
+      border-radius: 5px;
+      display: inline-block;
+    }
+
+    .dropped {
+      background-color: green;
     }
 
     @keyframes colorShift {
@@ -108,25 +146,13 @@
       from { opacity: 0; transform: scale(0.9); }
       to { opacity: 1; transform: scale(1); }
     }
-
-    .animated-bg {
-      animation: colorShift 1s infinite;
-    }
-
-    .hidden-mode {
-      display: none;
-      position: fixed;
-      bottom: 10px;
-      right: 10px;
-      color: yellow;
-      font-size: 18px;
-    }
   </style>
 </head>
 <body>
 
   <h1>Keltoş Baba İfşa</h1>
   <button class="button" id="startBtn">Tıkla ve İfşayı Gör</button>
+  <button class="button" id="gameStartBtn">Mini Oyun Başlat</button>
 
   <div class="countdown" id="countdown">
     <h2 id="countNum">Hazır mısın?</h2>
@@ -141,23 +167,37 @@
     <img src="https://i.imgur.com/tmQqSfg_d.webp" alt="ifşa">
   </div>
 
-  <div class="question-section" id="questionSection">
-    <h2>Sen Keltoş Babanın Yakışıklı Olduğunu Düşünüyormusun?</h2>
-    <button class="answer-btn" onclick="checkAnswer('A')">A - Hayır</button>
-    <button class="answer-btn" onclick="checkAnswer('B')">B - HAYIR</button>
-    <button class="answer-btn" onclick="checkAnswer('C')">C - hayır</button>
-    <button class="answer-btn" onclick="checkAnswer('D')">D - Evet</button>
-    <button class="answer-btn" onclick="checkAnswer('E')">E - Yaniii</button>
+  <div class="funnyscreen" id="funnyscreen">
+    <h2>Fıkra Zamanı!</h2>
+    <div class="question-section" id="questionSection">
+      <h2>Sen Keltoş Babanın Yakışıklı Olduğunu Düşünüyormusun?</h2>
+      <button class="answer-btn" onclick="checkAnswer('A')">A - Hayır</button>
+      <button class="answer-btn" onclick="checkAnswer('B')">B - HAYIR</button>
+      <button class="answer-btn" onclick="checkAnswer('C')">C - hayır</button>
+      <button class="answer-btn" onclick="checkAnswer('D')">D - Evet</button>
+      <button class="answer-btn" onclick="checkAnswer('E')">E - Yaniii</button>
+    </div>
+
+    <div class="game-section" id="gameSection">
+      <h2>Fıkra Cümlesini Tamamla</h2>
+      <div class="question">
+        <p>Bir gün Nasreddin Hoca...</p>
+        <div class="dropzone" id="drop1"></div>
+      </div>
+      <div class="draggable" id="drag1" draggable="true" ondragstart="drag(event)">gittikten sonra evine döndü.</div>
+      <div class="draggable" id="drag2" draggable="true" ondragstart="drag(event)">tuttu ve bir kese para verdi.</div>
+      <div class="draggable" id="drag3" draggable="true" ondragstart="drag(event)">elinde büyük bir çömlekle yürüyordu.</div>
+      <div class="draggable" id="drag4" draggable="true" ondragstart="drag(event)">gittiği yolda köy halkını gördü.</div>
+    </div>
+
   </div>
 
   <audio id="screamSound" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_6a7305532a.mp3?filename=female-scream-164456.mp3"></audio>
   <audio id="bgMusic" src="https://cdn.pixabay.com/download/audio/2023/02/03/audio_b69bfb31f5.mp3?filename=comedy-drumloop-139279.mp3" loop></audio>
-  <audio id="hiddenSound" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_3c3b6f1d5f.mp3?filename=cartoon-funny-sound-113180.mp3"></audio>
-
-  <div class="hidden-mode" id="secret">Keltoş Modu Aktif!</div>
 
   <script>
     document.getElementById('startBtn').addEventListener('click', startSequence);
+    document.getElementById('gameStartBtn').addEventListener('click', startGame);
 
     function startSequence() {
       const countdown = document.getElementById('countdown');
@@ -165,7 +205,6 @@
       const jumpscare = document.getElementById('jumpscare');
       const reveal = document.getElementById('reveal');
       const scream = document.getElementById('screamSound');
-      const bg = document.getElementById('bgMusic');
       const questionSection = document.getElementById('questionSection');
 
       countdown.style.display = 'flex';
@@ -203,19 +242,40 @@
       }
     }
 
-    // Gizli Keltoş Modu
-    let input = "";
-    window.addEventListener("keydown", (e) => {
-      input += e.key.toLowerCase();
-      if (input.includes("keltoş")) {
-        document.getElementById("secret").style.display = "block";
-        document.getElementById("hiddenSound").play();
-        setTimeout(() => {
-          document.getElementById("secret").style.display = "none";
-          input = "";
-        }, 3000);
+    // Fıkra Sürükle Bırak İşlemleri
+    let correctAnswers = 0;
+
+    function drag(event) {
+      event.dataTransfer.setData("text", event.target.id);
+    }
+
+    function allowDrop(event) {
+      event.preventDefault();
+    }
+
+    function drop(event) {
+      event.preventDefault();
+      var data = event.dataTransfer.getData("text");
+      var droppedElement = document.getElementById(data);
+      event.target.appendChild(droppedElement);
+
+      if (event.target.id === 'drop1' && droppedElement.id === 'drag3') {
+        correctAnswers++;
+      } else if (event.target.id === 'drop2' && droppedElement.id === 'drag1') {
+        correctAnswers++;
       }
-    });
+
+      if (correctAnswers >= 3) {
+        document.getElementById('funnyscreen').style.display = 'none';
+        document.getElementById('reveal').style.display = 'flex';
+      }
+    }
+
+    document.getElementById('drop1').addEventListener('drop', drop);
+    document.getElementById('drop1').addEventListener('dragover', allowDrop);
+    document.getElementById('drop2').addEventListener('drop', drop);
+    document.getElementById('drop2').addEventListener('dragover', allowDrop);
+
   </script>
 
 </body>

@@ -126,7 +126,7 @@
 <body>
 
   <h1>Keltoş Baba İfşa</h1>
-  <button class="button" onclick="startSequence()">Tıkla ve İfşayı Gör</button>
+  <button class="button" id="startBtn">Tıkla ve İfşayı Gör</button>
 
   <div class="countdown" id="countdown">
     <h2 id="countNum">Hazır mısın?</h2>
@@ -157,6 +157,8 @@
   <div class="hidden-mode" id="secret">Keltoş Modu Aktif!</div>
 
   <script>
+    document.getElementById('startBtn').addEventListener('click', startSequence);
+
     function startSequence() {
       const countdown = document.getElementById('countdown');
       const countNum = document.getElementById('countNum');

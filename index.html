@@ -28,7 +28,7 @@
     #jumpscare img {
       width: 100%; max-width: 400px; animation: fadeIn 1s ease forwards;
     }
-    #questionSection, #gameSection, #ifsaSection {
+    #questionSection, #ifsaSection {
       display: none; flex-direction: column; justify-content: center; align-items: center;
       height: 100vh; animation: fadeSlide 1s ease forwards;
     }
@@ -65,15 +65,6 @@
       0% { color: red; } 25% { color: blue; } 50% { color: green; }
       75% { color: yellow; } 100% { color: purple; }
     }
-    #gameSection p { margin: 10px; }
-    .drag {
-      display: inline-block; padding: 5px 10px; margin: 5px;
-      background: darkorange; color: white; border-radius: 8px; cursor: move;
-    }
-    .drop {
-      display: inline-block; min-width: 100px; min-height: 30px;
-      border: 2px dashed white; margin-left: 10px; padding: 5px;
-    }
   </style>
 </head>
 <body>
@@ -89,21 +80,12 @@
   </div>
 
   <div id="questionSection" class="center">
-    <h2>Sen Keltoş Babanın Yakışıklı Olduğunu Düşünüyor musun?</h2>
+    <h2>Keltoş Babanın Yakışıklı Olduğunu Düşünüyor musun?</h2>
     <div class="option" onclick="checkAnswer('A')">A - Hayır</div>
     <div class="option" onclick="checkAnswer('B')">B - HAYIR</div>
     <div class="option" onclick="checkAnswer('C')">C - hayır</div>
     <div class="option" onclick="checkAnswer('D')">D - Evet</div>
     <div class="option" onclick="checkAnswer('E')">E - Yaniii</div>
-  </div>
-
-  <div id="gameSection" class="center">
-    <p><strong>Keltoş Baba ne içer?</strong></p>
-    <div class="drag" id="çay" draggable="true" ondragstart="drag(event)">Çay</div>
-    <div class="drag" id="ayran" draggable="true" ondragstart="drag(event)">Ayran</div>
-    <div class="drag" id="kola" draggable="true" ondragstart="drag(event)">Kola</div>
-    <div class="drop" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
-    <button class="btn" onclick="checkJoke()">Kontrol Et</button>
   </div>
 
   <div id="ifsaSection" class="center bg-flash">
@@ -114,8 +96,6 @@
   <audio id="screamSound" src="https://www.soundjay.com/human/sounds/scream-01.mp3"></audio>
 
   <script>
-    let correctAnswers = 0;
-
     function startCountdown() {
       document.getElementById('main').style.display = 'none';
       const countdownEl = document.getElementById('countdown');
@@ -147,35 +127,9 @@
     function checkAnswer(answer) {
       if (["D", "E"].includes(answer)) {
         document.getElementById('questionSection').style.display = 'none';
-        document.getElementById('gameSection').style.display = 'flex';
+        document.getElementById('ifsaSection').style.display = 'flex';
       } else {
-        alert("Sen aptal mısın Keltoş YAKIIŞIKLI?");
-      }
-    }
-
-    function allowDrop(ev) { ev.preventDefault(); }
-
-    function drag(ev) { ev.dataTransfer.setData("text", ev.target.id); }
-
-    function drop(ev) {
-      ev.preventDefault();
-      let data = ev.dataTransfer.getData("text");
-      ev.target.innerText = document.getElementById(data).innerText;
-      ev.target.setAttribute('data-answer', data);
-    }
-
-    function checkJoke() {
-      const dropBox = document.querySelector('.drop');
-      const answer = dropBox.getAttribute('data-answer');
-      if (answer === 'çay') {
-        correctAnswers++;
-        if (correctAnswers >= 1) {
-          document.getElementById('gameSection').style.display = 'none';
-          document.getElementById('ifsaSection').style.display = 'flex';
-        }
-      } else {
-        alert('Yanlış cevap! Siteden atılıyorsun.');
-        location.reload();
+        alert("Sen aptal mısın? Keltoş YAKIŞIKLI 😎");
       }
     }
   </script>

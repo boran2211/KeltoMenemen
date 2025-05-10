@@ -78,8 +78,8 @@
 </head>
 <body>
   <div class="center" id="main">
-    <h1>Keltoş Baba İfşa</h1>
-    <button class="btn" onclick="startCountdown()">Tıkla ve İfşayı Gör</button>
+    <h1>KeltoMenemen İfşa</h1>
+    <button class="btn" onclick="startCountdown()">Tıkla ve KeltoMenemeni Gör</button>
   </div>
 
   <div id="countdown" class="center"></div>
@@ -97,21 +97,9 @@
     <div class="option" onclick="checkAnswer('E')">E - Yaniii</div>
   </div>
 
-  <div id="gameSection" class="center">
-    <h2>Fıkradaki boşluğu doğru kelimeyle doldur!</h2>
-    <p id="jokeText">Temel sabah uyanır uyanmaz bir bardak ___ içer.</p>
-    <div class="drop" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
-    <div>
-      <span class="drag" draggable="true" ondragstart="drag(event)" id="coffee">kahve</span>
-      <span class="drag" draggable="true" ondragstart="drag(event)" id="su">su</span>
-      <span class="drag" draggable="true" ondragstart="drag(event)" id="çay">çay</span>
-    </div>
-    <button class="btn" onclick="checkJoke()">Kontrol Et</button>
-  </div>
-
-  <div id="ifsaSection" class="center bg-flash">
+ <div id="ifsaSection" class="center bg-flash">
     <div class="top-text">YA KALECİ ÇIKSANA :D 🤣</div>
-    <img src="https://i.imgur.com/tmQqSfg_d.webp" alt="Keltoş İfşa">
+    <img src="https://i.imgur.com/GaWeKnO_d.webp" alt="Keltoş İfşa">
   </div>
 
   <audio id="screamSound" src="https://www.soundjay.com/human/sounds/scream-01.mp3"></audio>
@@ -148,11 +136,11 @@
     }
 
     function checkAnswer(answer) {
-      if (["A", "B", "C"].includes(answer)) {
+      if (["D", "E"].includes(answer)) {
         document.getElementById('questionSection').style.display = 'none';
         document.getElementById('gameSection').style.display = 'flex';
       } else {
-        alert("Sen aptal mısın?");
+        alert("Sen aptal mısın Keltoş YAKIIŞIKLI?");
       }
     }
 
